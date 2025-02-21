@@ -21,11 +21,12 @@ async function getBasicInfo() {
   });
   console.log(results);
 }
+getBasicInfo();
 
 // Ejercicio 2: Información de contacto
 // ==================================
 // Para cada usuario, obtener: username, email, teléfono y móvil
-async function getContactInfo() {
+
   // Tu código aquí:
   // 1. Hacer fetch de 6 usuarios
   // 2. Extraer solo la información de contacto
@@ -39,12 +40,25 @@ async function getContactInfo() {
   //   },
   //   ...
   // ]
+  async function getContactInfo() {
+    const contactRes = await fetch("https://randomuser.me/api/?results=6")
+    const finalContactRes = await contactRes.json();
+    const result = finalContactRes.results.map((results) => {
+      return {
+        username: results.login.username,
+        email: results.email,
+        phone: results.phone,
+        cell: results.cell
+      };
+    });
+console.log(result)
 }
+getContactInfo();
 
 // Ejercicio 3: Datos de localización
 // ================================
 // Para cada usuario, obtener: país, estado/provincia, ciudad y código postal
-async function getLocationInfo() {
+
   // Tu código aquí:
   // 1. Hacer fetch de 6 usuarios
   // 2. Extraer solo la información de localización
@@ -58,12 +72,25 @@ async function getLocationInfo() {
   //   },
   //   ...
   // ]
+  async function getLocationInfo() {
+    const locationRes = await fetch("https://randomuser.me/api/?results=6")
+    const finalLocation = await locationRes.json();
+    const finalResLocation = finalLocation.results.map((result) => {
+      return {
+        country: result.location.country,
+        state: result.location.state,
+        city: result.location.city,
+        postcode: result.location.postcode,
+      };
+    });
+    console.log(finalResLocation);
 }
+getLocationInfo();
 
 // Ejercicio 4: Información de login
 // ===============================
 // Para cada usuario, obtener: username, password y uuid
-async function getLoginInfo() {
+
   // Tu código aquí:
   // 1. Hacer fetch de 6 usuarios
   // 2. Extraer solo la información de login
@@ -76,12 +103,24 @@ async function getLoginInfo() {
   //   },
   //   ...
   // ]
+  async function getLoginInfo() {
+    const loginRes = await fetch("https://randomuser.me/api/?results=6")
+    const finalRes = await loginRes.json();
+    const finalLoginRes = finalRes.results.map((result) => {
+      return {
+        username: result.login.username,
+        password: result.login.password,
+        uuid: result.login.uuid,
+      };
+    });
+    console.log(finalLoginRes);
 }
+getLoginInfo();
 
 // Ejercicio 5: Datos personales
 // ===========================
 // Para cada usuario, obtener: nombre completo, edad, fecha de nacimiento (en formato legible) y nacionalidad
-async function getPersonalInfo() {
+
   // Tu código aquí:
   // 1. Hacer fetch de 6 usuarios
   // 2. Extraer y formatear la información personal
@@ -96,7 +135,21 @@ async function getPersonalInfo() {
   //   },
   //   ...
   // ]
+  async function getPersonalInfo() {
+    const personalRes = await fetch("https://randomuser.me/api/?results=6")
+    console.log(personalRes);
+    const finalRes = await personalRes.json();
+    const finalPersonalRes = finalRes.results.map((result) => {
+      return { 
+        fullName: `${result.name.first} ${result.name.last}`,
+        age: result.dob.age,
+        birthdate: result.dob.date,
+        nationality: result.dob.nat,
+      };
+    });
+    console.log(finalPersonalRes);
 }
+getPersonalInfo();
 
 // Ejercicio 6: Información combinada
 // ================================
