@@ -1,6 +1,5 @@
 // EJERCICIOS DE FETCH Y MANIPULACIÓN DE DATOS
 // ========================================
-
 /* 
 API: https://randomuser.me/api/
 Documentación: https://randomuser.me/documentation
@@ -21,7 +20,7 @@ async function getBasicInfo() {
   });
   console.log(results);
 }
-getBasicInfo();
+// getBasicInfo();
 
 // Ejercicio 2: Información de contacto
 // ==================================
@@ -53,7 +52,7 @@ getBasicInfo();
     });
 console.log(result)
 }
-getContactInfo();
+// getContactInfo();
 
 // Ejercicio 3: Datos de localización
 // ================================
@@ -85,7 +84,7 @@ getContactInfo();
     });
     console.log(finalResLocation);
 }
-getLocationInfo();
+// getLocationInfo();
 
 // Ejercicio 4: Información de login
 // ===============================
@@ -115,7 +114,7 @@ getLocationInfo();
     });
     console.log(finalLoginRes);
 }
-getLoginInfo();
+// getLoginInfo();
 
 // Ejercicio 5: Datos personales
 // ===========================
@@ -136,25 +135,29 @@ getLoginInfo();
   //   ...
   // ]
   async function getPersonalInfo() {
-    const personalRes = await fetch("https://randomuser.me/api/?results=6")
-    console.log(personalRes);
-    const finalRes = await personalRes.json();
-    const finalPersonalRes = finalRes.results.map((result) => {
-      return { 
-        fullName: `${result.name.first} ${result.name.last}`,
-        age: result.dob.age,
-        birthdate: result.dob.date,
-        nationality: result.dob.nat,
-      };
-    });
-    console.log(finalPersonalRes);
+    try {
+      const personalRes = await fetch("https://randomuser.me/api/?results=6")
+      if(personalRes.status !== 200) throw new Error('call error')
+      const finalRes = await personalRes.json();
+      const finalPersonalRes = finalRes.results.map((result) => {
+        return { 
+          fullName: `${result.name.first} ${result.name.last}`,
+          age: result.dob.age,
+          birthdate: result.dob.date,
+          nationality: result.nat,
+        };
+      });
+      console.log(finalPersonalRes);
+  } catch(e) {
+      console.log(e)
+  }
 }
-getPersonalInfo();
-
+// getPersonalInfo();
+  
 // Ejercicio 6: Información combinada
 // ================================
 // Para cada usuario, combinar datos personales con localización
-async function getCombinedInfo() {
+
   // Tu código aquí:
   // 1. Hacer fetch de 6 usuarios
   // 2. Combinar datos personales con localización
@@ -169,12 +172,26 @@ async function getCombinedInfo() {
   //   },
   //   ...
   // ]
+  async function getCombinedInfo() {
+    const infoRes = await fetch ("https://randomuser.me/api/?results=6")
+    const infoPersonalRes = await infoRes.json();
+    const finalInfoPersonal = infoPersonalRes.results.map((result) =>{
+      return {
+        fullName: `${result.name.first} ${result.name.last}`,
+        age: result.dob.age,
+        country: result.location.country,
+        city: result.location.city,
+        email: result.email,
+      };
+    })
+    console.log(finalInfoPersonal);
 }
+// getCombinedInfo();
 
 // Ejercicio 7: Datos para una red social
 // ====================================
 // Para cada usuario, obtener los datos que se mostrarían en un perfil social
-async function getSocialInfo() {
+
   // Tu código aquí:
   // 1. Hacer fetch de 6 usuarios
   // 2. Extraer y combinar los datos relevantes para un perfil social
@@ -191,16 +208,32 @@ async function getSocialInfo() {
   //   },
   //   ...
   // ]
+  async function getSocialInfo() {
+    const socialInfo = await fetch("https://randomuser.me/api/?results=6")
+    const socialInfoRes = await socialInfo.json();
+    const finalSocialInfo = socialInfoRes.results.map((result) => {
+      return {
+        userName: result.login.username,
+        fullName: `${result.name.first} ${result.name.last}`,
+        age: result.dob.age,
+        city: result.location.city,
+        country: result.location.country,
+        email: result.email,
+        picture: result.picture.medium,
+      };
+    })
+    console.log(finalSocialInfo);
 }
+// getSocialInfo();
 
 // Para probar los ejercicios, descomenta la función que quieras ejecutar:
-// getBasicInfo();
-// getContactInfo();
-// getLocationInfo();
-// getLoginInfo();
-// getPersonalInfo();
-// getCombinedInfo();
-// getSocialInfo();
+  getBasicInfo();
+//  getContactInfo();
+//  getLocationInfo();
+//  getLoginInfo();
+//  getPersonalInfo();
+//  getCombinedInfo();
+//  getSocialInfo();
 
 // EJERCICIO OPCIONAL: ¡Conecta los datos con HTML! 🚀
 // ================================================
